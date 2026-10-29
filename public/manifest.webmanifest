@@ -1,7 +1,7 @@
-{
+﻿{
   "name": "SBC Affiliate",
   "short_name": "SBC Affiliate",
-  "description": "SBC Affiliate educational demo",
+  "description": "SBC Affiliate Market - Shop, Earn, Grow",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#10100f",
@@ -10,3 +10,4 @@
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }
+
