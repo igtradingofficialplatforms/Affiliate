@@ -5543,5 +5543,365 @@ export const catalog = [
     "description": "Premium performance running shoe sample listing inspired by athletic footwear. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
     "price": 249.99,
     "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"
+},
+{
+    "id": "DEMO-616",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "Wireless Bluetooth Earbuds",
+    "description": "Compact wireless Bluetooth earbuds with a portable charging case. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 14.99,
+    "image": "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-617",
+    "market": "aliexpress",
+    "category": "Accessories",
+    "name": "Classic Polarized Sunglasses",
+    "description": "Stylish everyday sunglasses with a lightweight frame. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 8.99,
+    "image": "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-618",
+    "market": "amazon",
+    "category": "Home & Kitchen",
+    "name": "Stainless Steel Water Bottle",
+    "description": "Reusable stainless steel water bottle for everyday hydration. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 12.99,
+    "image": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-619",
+    "market": "alibaba",
+    "category": "Fashion",
+    "name": "Minimalist Leather Wallet",
+    "description": "Compact minimalist wallet with multiple card slots. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 9.50,
+    "image": "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-620",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "Portable Mini Bluetooth Speaker",
+    "description": "Small portable Bluetooth speaker for music and everyday entertainment. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 19.99,
+    "image": "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-621",
+    "market": "aliexpress",
+    "category": "Fashion",
+    "name": "Casual Canvas Backpack",
+    "description": "Lightweight casual backpack for school, travel and daily use. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 18.99,
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-622",
+    "market": "amazon",
+    "category": "Home & Kitchen",
+    "name": "Modern Ceramic Coffee Mug",
+    "description": "Modern ceramic coffee mug for home and office use. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 7.99,
+    "image": "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-623",
+    "market": "alibaba",
+    "category": "Accessories",
+    "name": "Adjustable Phone Stand",
+    "description": "Foldable adjustable phone stand for desks and workspaces. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 5.99,
+    "image": "https://images.unsplash.com/photo-1586953208448-b95a79798f07?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-624",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "LED Desk Reading Lamp",
+    "description": "Compact LED desk lamp designed for reading and studying. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 16.99,
+    "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-625",
+    "market": "aliexpress",
+    "category": "Fashion",
+    "name": "Classic Analog Wristwatch",
+    "description": "Simple analog wristwatch with a clean everyday design. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 22.99,
+    "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-626",
+    "market": "amazon",
+    "category": "Sports",
+    "name": "Adjustable Jump Rope",
+    "description": "Adjustable fitness jump rope for home workouts and cardio training. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 6.99,
+    "image": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-627",
+    "market": "alibaba",
+    "category": "Home & Kitchen",
+    "name": "Reusable Silicone Food Containers",
+    "description": "Reusable food storage containers for organizing everyday meals. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 11.99,
+    "image": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-628",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "USB-C Fast Charging Cable",
+    "description": "Durable USB-C charging cable for compatible electronic devices. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 5.49,
+    "image": "https://images.unsplash.com/photo-1615526675159-e248c3021d3f?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-629",
+    "market": "aliexpress",
+    "category": "Beauty",
+    "name": "Makeup Brush Set",
+    "description": "Everyday makeup brush set for personal beauty routines. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 9.99,
+    "image": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-630",
+    "market": "amazon",
+    "category": "Home & Kitchen",
+    "name": "Minimalist Wall Clock",
+    "description": "Modern minimalist wall clock for home and office decoration. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 15.99,
+    "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-631",
+    "market": "alibaba",
+    "category": "Fashion",
+    "name": "Cotton Baseball Cap",
+    "description": "Casual cotton baseball cap with an adjustable fit. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 7.49,
+    "image": "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-632",
+    "market": "amazon",
+    "category": "Sports",
+    "name": "Non-Slip Yoga Mat",
+    "description": "Comfortable exercise mat for yoga, stretching and home workouts. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 21.99,
+    "image": "https://images.unsplash.com/photo-1592432678016-e910b452f9a2?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-633",
+    "market": "aliexpress",
+    "category": "Accessories",
+    "name": "Compact Travel Organizer Bag",
+    "description": "Compact organizer bag for keeping travel essentials together. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 10.99,
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-634",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "Wireless Computer Mouse",
+    "description": "Ergonomic wireless mouse for everyday computer use. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 13.99,
+    "image": "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-635",
+    "market": "alibaba",
+    "category": "Home & Kitchen",
+    "name": "Decorative Indoor Plant Pot",
+    "description": "Decorative planter pot for indoor plants and home styling. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 8.49,
+    "image": "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-636",
+    "market": "amazon",
+    "category": "Fashion",
+    "name": "Everyday Cotton T-Shirt",
+    "description": "Comfortable everyday cotton T-shirt with a simple casual style. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 12.49,
+    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-637",
+    "market": "aliexpress",
+    "category": "Accessories",
+    "name": "Stainless Steel Keychain",
+    "description": "Simple stainless steel keychain for organizing everyday keys. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 4.99,
+    "image": "https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-638",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "Portable Power Bank",
+    "description": "Portable power bank for charging compatible devices while travelling. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 24.99,
+    "image": "https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-639",
+    "market": "alibaba",
+    "category": "Home & Kitchen",
+    "name": "Reusable Kitchen Utensil Set",
+    "description": "Practical kitchen utensil set for everyday food preparation. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 14.50,
+    "image": "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-640",
+    "market": "amazon",
+    "category": "Beauty",
+    "name": "Electric Facial Cleansing Brush",
+    "description": "Compact facial cleansing brush for everyday skincare routines. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 17.99,
+    "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-641",
+    "market": "aliexpress",
+    "category": "Fashion",
+    "name": "Women's Casual Shoulder Bag",
+    "description": "Versatile casual shoulder bag for everyday use and outings. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 19.99,
+    "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-642",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "Over-Ear Wired Headphones",
+    "description": "Comfortable over-ear headphones for music and multimedia listening. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 18.99,
+    "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-643",
+    "market": "alibaba",
+    "category": "Sports",
+    "name": "Fitness Resistance Bands Set",
+    "description": "Resistance bands set for strength training and home fitness exercises. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 9.49,
+    "image": "https://images.unsplash.com/photo-1599058917212-d750089bc07e?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-644",
+    "market": "amazon",
+    "category": "Home & Kitchen",
+    "name": "Glass Food Storage Jar Set",
+    "description": "Reusable glass jars for storing pantry ingredients and kitchen essentials. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 16.49,
+    "image": "https://images.unsplash.com/photo-1603199506016-b9a594b593c0?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-645",
+    "market": "aliexpress",
+    "category": "Accessories",
+    "name": "Laptop Protective Sleeve",
+    "description": "Soft protective laptop sleeve for carrying and storing a laptop. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 13.49,
+    "image": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-646",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "Digital Alarm Clock",
+    "description": "Compact digital alarm clock for bedside and desktop use. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 11.99,
+    "image": "https://images.unsplash.com/photo-1508057198894-247b23fe5ade?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-647",
+    "market": "alibaba",
+    "category": "Fashion",
+    "name": "Lightweight Running Cap",
+    "description": "Lightweight sports cap for running, walking and outdoor activities. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 8.99,
+    "image": "https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-648",
+    "market": "amazon",
+    "category": "Home & Kitchen",
+    "name": "Insulated Travel Coffee Tumbler",
+    "description": "Reusable insulated tumbler for coffee, tea and other beverages. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 17.49,
+    "image": "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-649",
+    "market": "aliexpress",
+    "category": "Beauty",
+    "name": "Cosmetic Makeup Organizer",
+    "description": "Compact organizer for storing makeup and beauty accessories. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 12.99,
+    "image": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-650",
+    "market": "amazon",
+    "category": "Sports",
+    "name": "Lightweight Sports Gym Bag",
+    "description": "Lightweight gym bag for carrying workout clothes and fitness essentials. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 20.99,
+    "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-651",
+    "market": "alibaba",
+    "category": "Accessories",
+    "name": "Minimalist Card Holder",
+    "description": "Slim card holder for carrying essential bank and ID cards. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 6.49,
+    "image": "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-652",
+    "market": "amazon",
+    "category": "Electronics",
+    "name": "USB LED Night Light",
+    "description": "Compact USB-powered LED night light for bedrooms and desks. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 7.99,
+    "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-653",
+    "market": "aliexpress",
+    "category": "Home & Kitchen",
+    "name": "Foldable Laundry Storage Basket",
+    "description": "Foldable laundry basket for organizing clothes and household items. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 14.99,
+    "image": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-654",
+    "market": "amazon",
+    "category": "Fashion",
+    "name": "Unisex Casual Sneakers",
+    "description": "Versatile casual sneakers for everyday walking and relaxed outfits. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 29.99,
+    "image": "https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=700&q=85"
+},
+{
+    "id": "DEMO-655",
+    "market": "alibaba",
+    "category": "Home & Kitchen",
+    "name": "Modern Desk Storage Organizer",
+    "description": "Practical desktop organizer for keeping stationery and small accessories tidy. Illustrative sample listing for the SBC Affiliate educational demo catalog; not a live marketplace offer and price is not verified.",
+    "price": 10.99,
+    "image": "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=700&q=85"
 }
 ];
