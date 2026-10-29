@@ -93,6 +93,15 @@ const levelFor = balance =>
 function App(){
  const [state,setState]=useState(loadState);
  const [cloudStatus,setCloudStatus]=useState(supabase?'Connecting to shared data…':'Offline demo mode');
+ useEffect(() => {
+  let viewport = document.querySelector('meta[name="viewport"]');
+  if (!viewport) {
+   viewport = document.createElement('meta');
+   viewport.name = 'viewport';
+   document.head.appendChild(viewport);
+  }
+  viewport.content = 'width=device-width, initial-scale=1, viewport-fit=cover';
+ }, []);
  const cloudReady=useRef(false);
  const applyingCloud=useRef(false);
  const lastCloudJson=useRef('');
@@ -186,7 +195,17 @@ const [grabbedTaskNos, setGrabbedTaskNos] = useState([]);
   },200);
   return()=>clearTimeout(timeout);
  },[state.users]);
- useEffect(()=>{if(window.location.pathname.replace(/\/$/,'')==='/admin'){setShowAuth(true);setAuth(a=>({...a,mode:'admin'}));}},[]);
+ useEffect(()=>{
+  if(window.location.pathname.replace(/\/$/,'')==='/admin'){
+   let adminSession=false;
+   try {
+    const savedSession=JSON.parse(localStorage.getItem('sbc-student-session')||'null');
+    adminSession=savedSession?.role==='admin' && loadState().isAdmin===true;
+   } catch {}
+   if(!adminSession){setShowAuth(true);setAuth(a=>({...a,mode:'admin'}));}
+   else {setShowAuth(false);setTab('Admin');}
+  }
+ },[]);
  const user=state.users.find(u=>u.id===state.activeId);
  const activeMarket=marketplaces.find(m=>m.level===levelFor(user?.balance))||marketplaces[0];
  const assigned=state.assignments.filter(a=>a.userId===user?.id);
@@ -253,10 +272,32 @@ const recentActivities = useMemo(() => {
 }, [state.taskReports, state.users]);
  const [sales,setSales]=useState(0);
  useEffect(()=>{const t=setInterval(()=>setSales(x=>(x+1)%3000),1800);return()=>clearInterval(t)},[]);
-const [showAuth,setShowAuth]=useState(
-  window.location.pathname.replace(/\/$/,'') === '/admin' ||
-  !sessionStorage.getItem('sbc-student-session')
-);
+const [showAuth,setShowAuth]=useState(() => {
+  const isAdminRoute = window.location.pathname.replace(/\/$/,'') === '/admin';
+  let savedSessionId = '';
+  let savedSessionRole = '';
+  try {
+    // Clear a legacy auto-selected demo account once. A student must sign in themselves.
+    if (localStorage.getItem('sbc-session-v2-migrated') !== '1') {
+      const legacySession = JSON.parse(localStorage.getItem('sbc-student-session') || 'null');
+      if (legacySession?.role === 'student' && legacySession?.userId === 'ID100') {
+        localStorage.removeItem('sbc-student-session');
+      }
+      localStorage.setItem('sbc-session-v2-migrated', '1');
+    }
+    const savedSession = JSON.parse(localStorage.getItem('sbc-student-session') || 'null');
+    savedSessionId = savedSession?.userId || '';
+    savedSessionRole = savedSession?.role || '';
+  } catch {}
+  const savedState = loadState();
+  // Restore only a session created by an explicit sign-in/register action.
+  // Do not treat the seeded demo state's activeId (ID100) as a login session.
+  const hasValidSavedStudent = Boolean(
+    savedSessionId && savedState.users.some(u => u.id === savedSessionId)
+  );
+  const hasValidSavedAdmin = savedSessionRole === 'admin' && savedState.isAdmin === true;
+  return isAdminRoute ? !hasValidSavedAdmin : !(hasValidSavedStudent || hasValidSavedAdmin);
+});
  const update=(fn)=>setState(s=>fn({...s}));
  const flash=(s)=>{setNotice(s);setTimeout(()=>setNotice(''),3500)};
  const setTabSafe=(t)=>{setTab(t);setSelectedTask(null);setMobileMenu(false)};
@@ -276,6 +317,7 @@ const [showAuth,setShowAuth]=useState(
       email === 'iqbalitengineer@gmail.com' &&
       password === 'Nbi.bristy7'
     ) {
+      localStorage.setItem('sbc-student-session', JSON.stringify({ role: 'admin' }));
       setState(s => ({ ...s, isAdmin: true }));
       setTab('Admin');
       setShowAuth(false);
@@ -320,6 +362,7 @@ const [showAuth,setShowAuth]=useState(
       password
     };
 
+    localStorage.setItem('sbc-student-session', JSON.stringify({ userId: id, role: 'student' }));
     setState(s => ({
       ...s,
       users: [...s.users, newUser],
@@ -347,6 +390,7 @@ const [showAuth,setShowAuth]=useState(
     return;
   }
 
+  localStorage.setItem('sbc-student-session', JSON.stringify({ userId: found.id, role: 'student' }));
   setState(s => ({
     ...s,
     activeId: found.id,
@@ -861,6 +905,7 @@ const cycleId =
  };
  const saveAddresses=()=>{setState(s=>({...s,depositAddresses:{...depositDraft}}));flash('Demo deposit address settings saved.')};
  const logout = () => {
+  localStorage.removeItem('sbc-student-session');
   sessionStorage.removeItem('sbc-student-session');
 
   setState(s => ({
@@ -885,54 +930,68 @@ const cycleId =
  const pageTitle=selectedTask?'Task details':tab;
  const firstNames=['Alex','Jamie','Taylor','Jordan','Casey','Morgan','Avery','Riley','Cameron','Drew','Sam','Robin','Skyler','Quinn','Parker','Reese','Rowan','Kendall','Emerson','Finley','Harper','Logan','Dakota','Charlie','Sage','Blake','River','Ellis','Remy','Phoenix','Milan','Ari','Noah','Maya','Luca','Zara','Theo','Nina','Owen','Iris','Elliot','Aria','Kai','Leah','Ezra','Milo','Lina','Eden','Aiden','Amara']; const lastNames=['Morgan','Wilson','Brooks','Lee','Parker','Reed','Cooper','Bennett','Hayes','Turner','Mitchell','Carter','Bailey','Collins','Murphy','Rivera','Cook','Bell','Ward','Gray','James','Price','Kelly','Ross','Howard','Flores','Powell','Long','Perry','Hughes','Foster','Bryant','Alexander','Russell','Griffin','Diaz','Hayward','Morris','Barnes','Jenkins','Watson','Coleman','Sanders','Patel','Kim','Lopez','Evans','Stewart','Young','Wood']; const fakeSalesNames=Array.from({length:3000},(_,i)=>`${firstNames[i%firstNames.length]} ${lastNames[Math.floor(i/firstNames.length)%lastNames.length]}${Math.floor(i/(firstNames.length*lastNames.length))?` ${Math.floor(i/(firstNames.length*lastNames.length))+1}`:''}`);
  return <div className="app-shell">
-  <header className="topbar"><button className="brand" onClick={()=>setTabSafe('Home')}><span className="brand-mark">S</span><span><b>SBC</b><small>AFFILIATE · 2001</small></span></button><div className="top-balance"><small>YOUR ACCOUNT BALANCE</small><strong>{money(user?.balance)}</strong></div><div className="top-actions"><span className="demo-pill">A/C</span><span className="cloud-status" title="Shared database connection">{cloudStatus}</span><label className="language-select" title="Translate interface"><Globe size={16}/><select aria-label="Language" value={language} onChange={e=>{setLanguage(e.target.value);localStorage.setItem('sbc-language',e.target.value)}}><option>English</option><option>বাংলা</option></select></label>{state.isAdmin ? (
-  <button
-    className="btn btn-outline"
-    onClick={logout}
+  
+{tab === 'Home' && !showAuth && !state.isAdmin && (
+  <a
+    className="sbc-customer-service"
+    href="https://t.me/sbeaffiliatemarket_778"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Customer Service on Telegram"
   >
-    <LogOut size={16} /> Exit Admin
-  </button>
-) : (
-  <>
-    <button
-      className="btn btn-glass"
-      onClick={() => {
-        setAuth(a => ({
-          ...a,
-          mode: 'signin',
-          email: '',
-          password: ''
-        }));
-        setShowAuth(true);
-      }}
-    >
-      Sign In
-    </button>
+    <span className="sbc-support-icon">
+      <Headset size={25} />
+    </span>
 
-    <button
-      className="btn btn-gold"
-      onClick={() => {
-        setAuth(a => ({
-          ...a,
-          mode: 'register',
-          email: '',
-          password: '',
-          name: ''
-        }));
-        setShowAuth(true);
-      }}
-    >
-      Register
-    </button>
+    <span>
+      <span className="sbc-support-title">
+        Customer Service
+      </span>
 
-    <button
-      className="btn btn-outline"
-      onClick={logout}
-    >
-      <LogOut size={16} /> Sign Out
-    </button>
-  </>
-)} <button className="avatar" onClick={()=>setTabSafe('Profile')}>{(user?.name||'S').slice(0,1).toUpperCase()}</button><button className="mobile-toggle" onClick={()=>setMobileMenu(!mobileMenu)}>{mobileMenu?<X/>:<Menu/>}</button></div></header>
+      <span className="sbc-support-subtitle">
+        Telegram Support ↗
+      </span>
+    </span>
+  </a>
+)}
+  <style>{`
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body, #root { width: 100%; max-width: 100%; margin: 0; }
+    body { overflow-x: hidden; }
+    .app-shell { width: 100%; max-width: 100%; min-width: 0; overflow-x: clip; }
+    .main-content { min-width: 0; max-width: 100%; }
+    @media (max-width: 768px) {
+      .bottom-nav { position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; z-index: 1000 !important; width: 100% !important; }
+      html, body, #root { min-width: 0 !important; }
+      .app-shell { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important; }
+      .topbar { width: 100%; max-width: 100%; min-width: 0; flex-wrap: wrap; gap: 8px; padding-left: 12px; padding-right: 12px; }
+      .top-balance { min-width: 0; }
+      .top-actions { min-width: 0; max-width: 100%; flex-wrap: wrap; gap: 6px; }
+      .cloud-status, .demo-pill { display: none !important; }
+      .main-content, .page-section, .section-block, .hero, .brand-showcase, .market-grid, .levels-list, .admin-columns, .task-details-grid { width: 100%; max-width: 100%; min-width: 0; }
+      .hero { grid-template-columns: minmax(0, 1fr) !important; }
+      .hero-art { min-width: 0; max-width: 100%; }
+      .market-grid, .levels-list, .admin-columns, .task-details-grid { grid-template-columns: minmax(0, 1fr) !important; }
+      .brand-showcase { overflow: hidden; }
+      .brand-showcase-track { max-width: 100%; }
+      .bottom-nav { display: flex !important; justify-content: space-around !important; align-items: stretch !important; padding: 7px 4px calc(7px + env(safe-area-inset-bottom, 0px)) !important; min-height: 64px; background: rgba(12, 13, 15, .97) !important; backdrop-filter: blur(16px); border-top: 1px solid rgba(245, 166, 35, .28); }
+      .bottom-nav button { flex: 1 1 0; min-width: 0; padding: 4px 2px !important; }
+      .bottom-nav button small { font-size: 10px; white-space: nowrap; }
+      .site-footer { margin-bottom: 12px; }
+      img, video, canvas { max-width: 100%; }
+      .auth-modal { width: calc(100% - 24px) !important; max-width: 440px; max-height: calc(100dvh - 24px); overflow-y: auto; }
+    }
+    .profile-settings { margin-bottom: 18px; }
+    .profile-language { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 12px 0 16px; }
+    .profile-language select { min-width: 150px; max-width: 100%; }
+    .profile-account-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    @media (max-width: 480px) {
+      .profile-language { align-items: flex-start; flex-direction: column; }
+      .profile-language select { width: 100%; }
+      .profile-account-actions .btn { flex: 1 1 100%; justify-content: center; }
+    }
+  `}</style>
+  <header className="topbar"><button className="brand" onClick={()=>setTabSafe('Home')}><span className="brand-mark">S</span><span><b>SBC</b><small>AFFILIATE · 2001</small></span></button><div className="top-balance"><small>YOUR ACCOUNT BALANCE</small><strong>{money(user?.balance)}</strong></div><div className="top-actions"><span className="demo-pill">A/C</span><span className="cloud-status" title="Shared database connection">{cloudStatus}</span>{state.isAdmin && <button className="btn btn-outline" onClick={logout}><LogOut size={16} /> Exit Admin</button>} <button className="avatar" onClick={()=>setTabSafe('Profile')}>{(user?.name||'S').slice(0,1).toUpperCase()}</button><button className="mobile-toggle" onClick={()=>setMobileMenu(!mobileMenu)}>{mobileMenu?<X/>:<Menu/>}</button></div></header>
   {notice&&<div className="toast" role="status">{notice}<button onClick={()=>setNotice('')}><X size={15}/></button></div>}
   <div className="app-layout">
 
@@ -1029,7 +1088,7 @@ tab==='Tasks'?<TasksView
   currentCycleId={state.taskCycles?.[user.id]}
   setTab={setTabSafe}
 />
-:tab==='Profile'?<ProfileView user={user} deposits={state.deposits.filter(x=>x.userId===user.id)} withdrawals={state.withdrawals.filter(x=>x.userId===user.id)} addresses={state.depositAddresses} depositForm={depositForm} setDepositForm={setDepositForm} depositSubmit={depositSubmit} withdrawForm={withdrawForm} setWithdrawForm={setWithdrawForm} withdrawSubmit={withdrawSubmit} flash={flash}/>:tab==='History'?<HistoryView ledger={state.ledger.filter(x=>x.userId===user.id)} deposits={state.deposits.filter(x=>x.userId===user.id)} withdrawals={state.withdrawals.filter(x=>x.userId===user.id)}/>:tab==='Support'?<SupportView/>:<section className="page-section"><h1>Welcome to SBC Affiliate</h1><button className="btn btn-gold" onClick={()=>setTabSafe('Levels')}>Explore levels</button></section>}
+:tab==='Profile'?<ProfileView user={user} deposits={state.deposits.filter(x=>x.userId===user.id)} withdrawals={state.withdrawals.filter(x=>x.userId===user.id)} addresses={state.depositAddresses} depositForm={depositForm} setDepositForm={setDepositForm} depositSubmit={depositSubmit} withdrawForm={withdrawForm} setWithdrawForm={setWithdrawForm} withdrawSubmit={withdrawSubmit} flash={flash} language={language} setLanguage={setLanguage} setAuth={setAuth} setShowAuth={setShowAuth} logout={logout} isAdmin={state.isAdmin}/>:tab==='History'?<HistoryView ledger={state.ledger.filter(x=>x.userId===user.id)} deposits={state.deposits.filter(x=>x.userId===user.id)} withdrawals={state.withdrawals.filter(x=>x.userId===user.id)}/>:tab==='Support'?<SupportView/>:<section className="page-section"><h1>Welcome to SBC Affiliate</h1><button className="btn btn-gold" onClick={()=>setTabSafe('Levels')}>Explore levels</button></section>}
    </main>
   </div>
   <nav className="bottom-nav">{nav.slice(0,5).map(([n,I])=><button key={n} className={tab===n?'active':''} onClick={()=>setTabSafe(n)}><span><I size={19}/></span><small>{language==='বাংলা'?({Home:'হোম',Levels:'লেভেল',Record:'রেকর্ড',Profile:'প্রোফাইল',History:'ইতিহাস'}[n]||n):n}</small></button>)}</nav>
@@ -1390,7 +1449,7 @@ const currentCycleReports = reports.filter(
   );
 }
 
-function ProfileView({user,deposits,withdrawals,addresses,depositForm,setDepositForm,depositSubmit,withdrawForm,setWithdrawForm,withdrawSubmit,flash}){return <section className="page-section"><div className="page-heading"><span className="eyebrow">ACCOUNT CENTER</span><h1>My profile</h1><p>Manage your wallet</p></div><div className="profile-summary"><span className="profile-avatar">{user.name[0]}</span><div><h2>{user.name}</h2><p>{user.email} · <b>{user.id}</b></p><span className="level-badge">LEVEL {levelFor(user.balance)||'LOCKED'}</span></div><div className="profile-balance"><span>BALANCE</span><b>{money(user.balance)}</b></div></div><div className="wallet-grid"><section className="panel" id="deposit-panel"><div className="panel-title"><span className="panel-icon deposit"><ArrowDownLeft/></span><div><h2>Deposit request</h2><p>Your deposit is being processed. It may take 30s-1 minutes</p></div></div><form onSubmit={depositSubmit}><label>Network<select value={depositForm.network} onChange={e=>setDepositForm(s=>({...s,network:e.target.value}))}><option>TRC20</option><option>BTC</option><option>ETH</option></select></label><div className="address-box"><span>{addresses[depositForm.network]||'Deposit address will appear here when available'}</span><button type="button" disabled={!addresses[depositForm.network]} onClick={async()=>{const address=String(addresses[depositForm.network]||'').trim();if(!address){flash('Admin has not configured this demo address yet.');return}try{await navigator.clipboard.writeText(address);flash('Deposit address copied.')}catch{flash('Copy was blocked by the browser. Select the address text and copy it manually.')}}}><Copy size={15}/> Copy</button></div><label>Amount (USD)<input type="number" min="1" step=".01" value={depositForm.amount} onChange={e=>setDepositForm(s=>({...s,amount:e.target.value}))} placeholder="Enter amount" required/></label><label className="upload-box"><Upload size={22}/><b>Upload deposit screenshot (optional)</b><span>{depositForm.proofName||'Click to choose an image · You can submit without it'}</span><input type="file" accept="image/*" onChange={e=>{const f=e.target.files?.[0];if(!f)return;const reader=new FileReader();reader.onload=()=>setDepositForm(s=>({...s,proof:String(reader.result),proofName:f.name}));reader.readAsDataURL(f)}}/></label><p className="helper-text"></p><button className="btn btn-primary wide" type="submit">Submit deposit request <ChevronRight size={16}/></button></form></section><section className="panel"><div className="panel-title"><span className="panel-icon withdraw"><ArrowUpRight/></span><div><h2>Withdraw request</h2><p>Enter your own wallet address</p></div></div><form onSubmit={withdrawSubmit}><label>Network<select value={withdrawForm.network} onChange={e=>setWithdrawForm(s=>({...s,network:e.target.value}))}><option>TRC20</option><option>BTC</option><option>ETH</option></select></label><label>Wallet address<div className="input-with-action"><input value={withdrawForm.address} onChange={e=>setWithdrawForm(s=>({...s,address:e.target.value}))} placeholder="Enter your demo wallet address" required/><button type="button" className="paste-button" onClick={async()=>{try{const clip=await navigator.clipboard.readText();if(!clip.trim()){flash('Clipboard is empty. Copy your wallet address first.');return}setWithdrawForm(s=>({...s,address:clip.trim()}));flash('Wallet address pasted.')}catch{flash('Clipboard access blocked. Right-click the field and choose Paste.')}}}><ClipboardList size={14}/> Paste</button></div></label><label>Amount (USD $)<input type="number" min="1" max={user.balance} step=".01" value={withdrawForm.amount} onChange={e=>setWithdrawForm(s=>({...s,amount:e.target.value}))} placeholder={`Available ${money(user.balance)}`} required/></label><p className="helper-text">Please double-check your address</p><button className="btn btn-gold wide" type="submit">Submit withdrawal request <ChevronRight size={16}/></button></form></section></div><div className="history-panels"><RequestTable title="Deposit requests" rows={deposits}/><RequestTable title="Withdrawal requests" rows={withdrawals}/></div></section>}
+function ProfileView({user,deposits,withdrawals,addresses,depositForm,setDepositForm,depositSubmit,withdrawForm,setWithdrawForm,withdrawSubmit,flash,language,setLanguage,setAuth,setShowAuth,logout,isAdmin}){return <section className="page-section"><div className="page-heading"><span className="eyebrow">ACCOUNT CENTER</span><h1>My profile</h1><p>Manage your wallet and account preferences</p></div><section className="panel profile-settings"><div className="panel-title"><span className="panel-icon"><Settings/></span><div><h2>Account settings</h2><p>Language and sign-in options</p></div></div><label className="profile-language"><Globe size={17}/> Interface language<select aria-label="Language" value={language} onChange={e=>{setLanguage(e.target.value);localStorage.setItem('sbc-language',e.target.value)}}><option>English</option><option>বাংলা</option></select></label><div className="profile-account-actions">{isAdmin?<button className="btn btn-outline" onClick={logout}><LogOut size={16}/> Exit Admin</button>:user?.id?<button className="btn btn-outline" onClick={logout}><LogOut size={16}/> Sign Out</button>:<><button className="btn btn-glass" onClick={()=>{setAuth(a=>({...a,mode:'signin',email:'',password:''}));setShowAuth(true)}}>Sign In</button><button className="btn btn-gold" onClick={()=>{setAuth(a=>({...a,mode:'register',email:'',password:'',name:''}));setShowAuth(true)}}>Register</button></>}</div></section><div className="profile-summary"><span className="profile-avatar">{user.name[0]}</span><div><h2>{user.name}</h2><p>{user.email} · <b>{user.id}</b></p><span className="level-badge">LEVEL {levelFor(user.balance)||'LOCKED'}</span></div><div className="profile-balance"><span>BALANCE</span><b>{money(user.balance)}</b></div></div><div className="wallet-grid"><section className="panel" id="deposit-panel"><div className="panel-title"><span className="panel-icon deposit"><ArrowDownLeft/></span><div><h2>Deposit request</h2><p>Your deposit is being processed. It may take 30s-1 minutes</p></div></div><form onSubmit={depositSubmit}><label>Network<select value={depositForm.network} onChange={e=>setDepositForm(s=>({...s,network:e.target.value}))}><option>TRC20</option><option>BTC</option><option>ETH</option></select></label><div className="address-box"><span>{addresses[depositForm.network]||'Deposit address will appear here when available'}</span><button type="button" disabled={!addresses[depositForm.network]} onClick={async()=>{const address=String(addresses[depositForm.network]||'').trim();if(!address){flash('Admin has not configured this demo address yet.');return}try{await navigator.clipboard.writeText(address);flash('Deposit address copied.')}catch{flash('Copy was blocked by the browser. Select the address text and copy it manually.')}}}><Copy size={15}/> Copy</button></div><label>Amount (USD)<input type="number" min="1" step=".01" value={depositForm.amount} onChange={e=>setDepositForm(s=>({...s,amount:e.target.value}))} placeholder="Enter amount" required/></label><label className="upload-box"><Upload size={22}/><b>Upload deposit screenshot (optional)</b><span>{depositForm.proofName||'Click to choose an image · You can submit without it'}</span><input type="file" accept="image/*" onChange={e=>{const f=e.target.files?.[0];if(!f)return;const reader=new FileReader();reader.onload=()=>setDepositForm(s=>({...s,proof:String(reader.result),proofName:f.name}));reader.readAsDataURL(f)}}/></label><p className="helper-text"></p><button className="btn btn-primary wide" type="submit">Submit deposit request <ChevronRight size={16}/></button></form></section><section className="panel"><div className="panel-title"><span className="panel-icon withdraw"><ArrowUpRight/></span><div><h2>Withdraw request</h2><p>Enter your own wallet address</p></div></div><form onSubmit={withdrawSubmit}><label>Network<select value={withdrawForm.network} onChange={e=>setWithdrawForm(s=>({...s,network:e.target.value}))}><option>TRC20</option><option>BTC</option><option>ETH</option></select></label><label>Wallet address<div className="input-with-action"><input value={withdrawForm.address} onChange={e=>setWithdrawForm(s=>({...s,address:e.target.value}))} placeholder="Enter your demo wallet address" required/><button type="button" className="paste-button" onClick={async()=>{try{const clip=await navigator.clipboard.readText();if(!clip.trim()){flash('Clipboard is empty. Copy your wallet address first.');return}setWithdrawForm(s=>({...s,address:clip.trim()}));flash('Wallet address pasted.')}catch{flash('Clipboard access blocked. Right-click the field and choose Paste.')}}}><ClipboardList size={14}/> Paste</button></div></label><label>Amount (USD $)<input type="number" min="1" max={user.balance} step=".01" value={withdrawForm.amount} onChange={e=>setWithdrawForm(s=>({...s,amount:e.target.value}))} placeholder={`Available ${money(user.balance)}`} required/></label><p className="helper-text">Please double-check your address</p><button className="btn btn-gold wide" type="submit">Submit withdrawal request <ChevronRight size={16}/></button></form></section></div><div className="history-panels"><RequestTable title="Deposit requests" rows={deposits}/><RequestTable title="Withdrawal requests" rows={withdrawals}/></div></section>}
 function RequestTable({title,rows}){return <section className="panel"><h2>{title}</h2>{!rows.length?<p className="empty-state">No requests yet.</p>:rows.slice(0,5).map(r=><div className="mini-row" key={r.id}><div><b>{money(r.amount)}</b><small>{r.network} · {new Date(r.date).toLocaleDateString()}</small></div><span className={`status ${r.status.toLowerCase()}`}>{r.status}</span></div>)}</section>}
 function HistoryView({ledger,deposits,withdrawals}){const rows=[...ledger.map(x=>({...x,kind:x.type})),...deposits.map(x=>({...x,kind:'deposit request'})),...withdrawals.map(x=>({...x,kind:'withdrawal request'}))].sort((a,b)=>new Date(b.date)-new Date(a.date));return <section className="page-section"><div className="page-heading"><span className="eyebrow">ACCOUNT ACTIVITY</span><h1>History</h1><p>Your commissions</p></div><div className="panel history-table"><div className="table-head"><span>Activity</span><span>Date</span><span>Amount</span><span>Status</span></div>{!rows.length?<p className="empty-state">No activity yet.</p>:rows.map(r=><div className="table-row" key={r.id}><div><b>{r.note||r.kind}</b><small>{r.kind} · {r.id}</small></div><span>{new Date(r.date).toLocaleString()}</span><strong className={r.amount<0?'red':r.kind==='commission'||r.kind==='deposit'?'green':''}>{money(r.amount)}</strong><span className="status">{r.status||'Recorded'}</span></div>)}</div></section>}
 function SupportView(){return <section className="page-section"><div className="support-hero"><span className="support-big"><Headset size={35}/></span><span className="eyebrow">WE'RE HERE TO HELP</span><h1>Student support</h1><p>Contact the SBC Affiliate Customer support</p><a className="btn btn-gold" href="https://t.me/sbeaffiliatemarket_778" target="_blank" rel="noreferrer">Open Telegram support <ArrowUpRight size={17}/></a></div></section>}

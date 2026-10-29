@@ -336,3 +336,417 @@
     padding: 6px 4px !important;
   }
 }
+
+/* ===== SBC AFFILIATE: MOBILE RESPONSIVE FIX ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .app-shell {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    overflow-x: clip !important;
+    padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* Header */
+  .topbar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 12px !important;
+  }
+
+  .topbar > *,
+  .top-actions > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .top-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    position: relative;
+    z-index: 10;
+  }
+
+  .top-balance {
+    min-width: 0 !important;
+    text-align: right !important;
+  }
+
+  .cloud-status,
+  .demo-pill {
+    display: none !important;
+  }
+
+  /* Main content */
+  .main-content,
+  .page-section,
+  .section-block {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .main-content {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Hero heading and description */
+  .hero {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 22px 16px !important;
+    margin: 10px 0 18px !important;
+    gap: 18px !important;
+  }
+
+  .hero-copy,
+  .hero-copy h1,
+  .hero-copy p,
+  .hero-art {
+    width: 100%;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(27px, 7.2vw, 36px) !important;
+    line-height: 1.12 !important;
+    letter-spacing: -0.7px !important;
+  }
+
+  .hero-copy p {
+    font-size: 13px !important;
+    line-height: 1.65 !important;
+  }
+
+  .hero-buttons {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* Cards and grids */
+  .market-grid,
+  .levels-list,
+  .admin-columns,
+  .task-details-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .market-card,
+  .level-card,
+  .section-block > *,
+  .page-section > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Brand animation: prevent narrow vertical strips */
+  .brand-showcase {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .brand-showcase-track {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    width: max-content !important;
+    max-width: none !important;
+    align-items: stretch !important;
+  }
+
+  .brand-showcase-track > *,
+  .brand-banner {
+    flex-shrink: 0 !important;
+    min-width: 230px !important;
+    width: 230px !important;
+    max-width: 230px !important;
+  }
+
+  .brand-banner {
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+
+  /* Keep bottom navigation fixed */
+  .bottom-nav {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    min-height: 64px !important;
+    padding: 7px 4px calc(7px + env(safe-area-inset-bottom, 0px)) !important;
+    background: rgba(12, 13, 15, 0.97) !important;
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(245, 166, 35, 0.35);
+  }
+
+  .bottom-nav button {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding: 5px 2px !important;
+  }
+
+  .bottom-nav button small {
+    font-size: 10px !important;
+    white-space: nowrap;
+  }
+
+  .site-footer {
+    margin-bottom: 12px;
+  }
+
+  .auth-modal {
+    width: calc(100% - 24px) !important;
+    max-width: 440px !important;
+    max-height: calc(100dvh - 24px) !important;
+    overflow-y: auto !important;
+  }
+}
+
+/* ===== FIX MOBILE HEADER AND BOTTOM NAV ===== */
+
+@media (max-width: 768px) {
+  .topbar {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "brand balance"
+      "actions actions" !important;
+    align-items: center !important;
+    justify-content: stretch !important;
+    gap: 10px 8px !important;
+    width: 100% !important;
+    padding: 10px 12px !important;
+    margin: 0 !important;
+  }
+
+  .topbar .brand {
+    grid-area: brand !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  .top-balance {
+    grid-area: balance !important;
+    justify-self: end !important;
+    text-align: right !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  .top-actions {
+    grid-area: actions !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    z-index: 20 !important;
+  }
+
+  .top-actions > * {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Full-width fixed navigation */
+  .bottom-nav {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-evenly !important;
+    align-items: center !important;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    border-radius: 0 0 12px 12px;
+    box-sizing: border-box !important;
+  }
+
+  .bottom-nav > *,
+  .bottom-nav button {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+}
+
+/* ===== MOBILE AUTH BUTTONS FIX ===== */
+
+@media (max-width: 768px) {
+  .top-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    width: 100% !important;
+    padding: 4px 0 !important;
+    overflow: visible !important;
+  }
+
+  .top-actions button,
+  .top-actions a {
+    position: relative !important;
+    inset: auto !important;
+    float: none !important;
+    transform: none !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 76px !important;
+    max-width: 100% !important;
+    min-height: 40px !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .top-actions button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .top-actions > * {
+    align-self: center !important;
+  }
+}
+
+/* SBC Affiliate Market - Floating Customer Service */
+.sbc-customer-service {
+  position: fixed;
+  right: 16px;
+  bottom: 90px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid #d4af37;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #171510, #30230b);
+  color: #f5d77b;
+  text-decoration: none;
+  box-shadow: 0 0 14px #d4af3740;
+  animation: sbcFloat 2.5s ease-in-out infinite,
+             sbcGlow 2.5s ease-in-out infinite;
+}
+
+.sbc-customer-service .sbc-support-icon {
+  font-size: 27px;
+}
+
+.sbc-customer-service .sbc-support-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.sbc-customer-service .sbc-support-subtitle {
+  margin-top: 3px;
+  color: #d6d0bf;
+  font-size: 11px;
+}
+
+@keyframes sbcFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes sbcGlow {
+  0%, 100% {
+    box-shadow: 0 0 12px #d4af3730;
+  }
+  50% {
+    box-shadow: 0 0 24px #d4af3780;
+  }
+}
+
+@media (max-width: 480px) {
+  .sbc-customer-service {
+    right: 12px;
+    bottom: 82px;
+    padding: 10px 12px;
+    border-radius: 15px;
+  }
+}
