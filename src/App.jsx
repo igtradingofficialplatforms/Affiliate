@@ -928,7 +928,6 @@ const cycleId =
 };
  const nav=[['Home',Home],['Levels',Layers3],['Record',ClipboardList],['Profile',UserRound],['History',History]];
  const pageTitle=selectedTask?'Task details':tab;
- const firstNames=['Alex','Jamie','Taylor','Jordan','Casey','Morgan','Avery','Riley','Cameron','Drew','Sam','Robin','Skyler','Quinn','Parker','Reese','Rowan','Kendall','Emerson','Finley','Harper','Logan','Dakota','Charlie','Sage','Blake','River','Ellis','Remy','Phoenix','Milan','Ari','Noah','Maya','Luca','Zara','Theo','Nina','Owen','Iris','Elliot','Aria','Kai','Leah','Ezra','Milo','Lina','Eden','Aiden','Amara']; const lastNames=['Morgan','Wilson','Brooks','Lee','Parker','Reed','Cooper','Bennett','Hayes','Turner','Mitchell','Carter','Bailey','Collins','Murphy','Rivera','Cook','Bell','Ward','Gray','James','Price','Kelly','Ross','Howard','Flores','Powell','Long','Perry','Hughes','Foster','Bryant','Alexander','Russell','Griffin','Diaz','Hayward','Morris','Barnes','Jenkins','Watson','Coleman','Sanders','Patel','Kim','Lopez','Evans','Stewart','Young','Wood']; const fakeSalesNames=Array.from({length:3000},(_,i)=>`${firstNames[i%firstNames.length]} ${lastNames[Math.floor(i/firstNames.length)%lastNames.length]}${Math.floor(i/(firstNames.length*lastNames.length))?` ${Math.floor(i/(firstNames.length*lastNames.length))+1}`:''}`);
  return <div className="app-shell">
   
 {tab === 'Home' && !showAuth && !state.isAdmin && (
@@ -1032,12 +1031,21 @@ const cycleId =
     
 <div className="sales-track" key={sales}>
   {Array.from(
-    { length: Math.min(20, recentActivities.length) },
-    (_, i) => {
-      const idx = (sales + i) % recentActivities.length;
-      const activity = recentActivities[idx];
+  {
+    length: Math.min(
+      20,
+      recentActivities.filter(activity => activity.real === true).length
+    )
+  },
+  (_, i) => {
+    const realActivities = recentActivities.filter(
+      activity => activity.real === true
+    );
 
-      return (
+    const idx = (sales + i) % realActivities.length;
+    const activity = realActivities[idx];
+
+    return (
         <div
           className="sale-row"
           key={`${activity.id}-${sales}-${i}`}
@@ -1049,9 +1057,7 @@ const cycleId =
           <div className="sale-person">
             <b>{activity.name}</b>
             <small>
-              {activity.real
-                ? 'Task Completed · Commission'
-                : 'Demo Activity'}
+              {'Task Completed · Commission'}
             </small>
           </div>
 

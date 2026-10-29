@@ -109,10 +109,14 @@
   font-size: 11px;
 }
 
-/* Amount */
+/* Recent Sales Amount - HD Green */
 .sale-row > strong {
-  color: #d4af37;
+  color: #00ff66 !important;
+  font-weight: 800;
   white-space: nowrap;
+  text-shadow:
+    0 0 5px rgba(0, 255, 102, 0.7),
+    0 0 12px rgba(0, 255, 102, 0.4);
 }
 
 /* Vertical Scrolling */
