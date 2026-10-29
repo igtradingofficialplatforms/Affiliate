@@ -58,7 +58,7 @@ const marketplaces=[
 import { catalog } from './catalog.js'; 
 import { supabase } from './supabase.js';
 
-const seedUsers=[{id:'',name:'',email:'',balance:0,level:0,done:0,role:'',password:''}];
+const seedUsers = [];
 const defaultState = () => ({
   users: seedUsers,
   activeId:null,
@@ -74,14 +74,98 @@ const defaultState = () => ({
   nextId: 101,
   feedIndex: 0
 });
-const loadState=()=>{try{return {...defaultState(),...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch{return defaultState()}};
-const normalizeSharedUsers=(input, preferredUser)=>{
- const seen=new Set();
- const users=(Array.isArray(input.users)?input.users:[]).filter(u=>{const email=String(u.email||'').trim().toLowerCase();if(!email)return true;if(seen.has(email))return false;seen.add(email);return true;});
- const matching=preferredUser?.email?users.find(u=>String(u.email||'').trim().toLowerCase()===String(preferredUser.email).trim().toLowerCase()):null;
-const activeId=matching?.id||(users.some(u=>u.id===input.activeId)?input.activeId:null);
- return {...input,users,activeId};
+
+const safeObjects = value =>
+  Array.isArray(value)
+    ? value.filter(
+        item => item && typeof item === 'object' && !Array.isArray(item)
+      )
+    : [];
+
+const normalizeState = input => {
+  const base = defaultState();
+  const source =
+    input && typeof input === 'object' && !Array.isArray(input)
+      ? input
+      : {};
+
+  return {
+    ...base,
+    ...source,
+    users: safeObjects(source.users ?? base.users).filter(
+  u =>
+    String(u.id ?? '') !== 'ID100' &&
+    String(u.name ?? '').trim().toLowerCase() !== 'demo student'
+),
+    assignments: safeObjects(source.assignments),
+    taskReports: safeObjects(source.taskReports),
+    offers: safeObjects(source.offers),
+    deposits: safeObjects(source.deposits),
+    withdrawals: safeObjects(source.withdrawals),
+    ledger: safeObjects(source.ledger),
+    taskCycles:
+      source.taskCycles &&
+      typeof source.taskCycles === 'object' &&
+      !Array.isArray(source.taskCycles)
+        ? source.taskCycles
+        : {},
+    depositAddresses: {
+      ...base.depositAddresses,
+      ...(source.depositAddresses &&
+      typeof source.depositAddresses === 'object' &&
+      !Array.isArray(source.depositAddresses)
+        ? source.depositAddresses
+        : {})
+    }
+  };
 };
+
+const loadState = () => {
+  try {
+    return normalizeState(
+      JSON.parse(localStorage.getItem(STORE) || '{}')
+    );
+  } catch {
+    return defaultState();
+  }
+};
+const normalizeSharedUsers = (input, preferredUser) => {
+  const normalized = normalizeState(input);
+  const seen = new Set();
+
+  const users = normalized.users.filter(u => {
+    const id = String(u.id ?? '').trim();
+    const name = String(u.name ?? '').trim().toLowerCase();
+    const email = String(u.email ?? '').trim().toLowerCase();
+
+    if (id === 'ID100') return false;
+    if (name === 'demo student') return false;
+    if (email === 'student@example.com') return false;
+
+    if (!email) return true;
+    if (seen.has(email)) return false;
+
+    seen.add(email);
+    return true;
+  });
+
+  const matching = preferredUser?.email
+    ? users.find(
+        u =>
+          String(u.email || '').trim().toLowerCase() ===
+          String(preferredUser.email).trim().toLowerCase()
+      )
+    : null;
+
+  const activeId =
+    matching?.id ||
+    (users.some(u => u.id === normalized.activeId)
+      ? normalized.activeId
+      : null);
+
+  return { ...normalized, users, activeId };
+};
+
 const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:2}).format(Number(n)||0);
 const code=(n)=>`ORD-${String(n).padStart(6,'0')}`;
 
@@ -140,7 +224,11 @@ const [grabbedTaskNos, setGrabbedTaskNos] = useState([]);
    const cleanRemote={...normalized};
    delete cleanRemote.activeId; delete cleanRemote.isAdmin;
    applyingCloud.current=true;
-   setState(prev=>({...cleanRemote,activeId:normalized.activeId,isAdmin:false}));
+  setState(prev => ({
+  ...cleanRemote,
+  activeId: normalized.activeId,
+  isAdmin: prev.isAdmin
+}));
    lastCloudJson.current=JSON.stringify(cleanRemote);
    cloudReady.current=true;
    setCloudStatus('SALES.SHIPS.BUY');
@@ -156,7 +244,11 @@ const [grabbedTaskNos, setGrabbedTaskNos] = useState([]);
     const json=JSON.stringify(remote);
     if(json===lastCloudJson.current)return;
     applyingCloud.current=true;
-    setState(prev=>({...remote,activeId:normalized.activeId,isAdmin:false}));
+    setState(prev => ({
+  ...cleanRemote,
+  activeId: normalized.activeId,
+  isAdmin: prev.isAdmin
+}));
     lastCloudJson.current=json;
     setCloudStatus('Connected · live updates');
    })
@@ -200,10 +292,14 @@ const [grabbedTaskNos, setGrabbedTaskNos] = useState([]);
    let adminSession=false;
    try {
     const savedSession=JSON.parse(localStorage.getItem('sbc-student-session')||'null');
-    adminSession=savedSession?.role==='admin' && loadState().isAdmin===true;
+    adminSession = savedSession?.role === 'admin';
    } catch {}
    if(!adminSession){setShowAuth(true);setAuth(a=>({...a,mode:'admin'}));}
-   else {setShowAuth(false);setTab('Admin');}
+   else {
+  setState(prev => ({ ...prev, isAdmin: true }));
+  setShowAuth(false);
+  setTab('Admin');
+}
   }
  },[]);
  const user=state.users.find(u=>u.id===state.activeId);
@@ -1089,7 +1185,7 @@ tab==='Tasks'?<TasksView
 <RecordView
   user={user}
   tasks={taskData}
-  ledger={state.ledger.filter(x => x.userId === user.id)}
+  ledger={state.ledger.filter(x =>  x.userId === user.id)}
   taskReports={(state.taskReports || []).filter(x => x.userId === user.id)}
   currentCycleId={state.taskCycles?.[user.id]}
   setTab={setTabSafe}
