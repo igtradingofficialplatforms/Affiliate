@@ -176,7 +176,7 @@ const levelFor = balance =>
 
 function App(){
  const [state,setState]=useState(loadState);
- const [cloudStatus,setCloudStatus]=useState(supabase?'Loading…':'Offline demo mode');
+ const [cloudStatus,setCloudStatus]=useState(supabase?'Loading…':'Amazon');
  useEffect(() => {
   let viewport = document.querySelector('meta[name="viewport"]');
   if (!viewport) {
@@ -200,7 +200,7 @@ const [grabbedTaskNos, setGrabbedTaskNos] = useState([]);
  // Shared state: admin changes are stored in Supabase and streamed to other devices.
  // The active account and admin session are intentionally kept local to each browser.
  useEffect(()=>{
-  if(!supabase){cloudReady.current=true;setCloudStatus('Offline demo mode');return;}
+  if(!supabase){cloudReady.current=true;setCloudStatus('Amazon');return;}
   let alive=true;
   const loadCloud=async()=>{
    const {data,error}=await supabase.from('sbc_shared_state').select('state').eq('id','main').maybeSingle();
